@@ -139,6 +139,8 @@ function LoginForm() {
                   setCheckLogin(true);
                 }}
               />
+              <br></br>
+              <Button onClick={() => navigate('/password/init')}>Forget Password?</Button>
               <Stack
                 spacing={1}
                 direction="row"
