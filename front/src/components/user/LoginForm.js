@@ -13,9 +13,9 @@ import * as Api from '../../api';
 // import { DispatchContext } from '../../App';
 import Header from '../Header';
 import Footer from '../Footer';
-
+import { validateEmail } from '../../utils';
 // import recoil
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { tokenState, userState } from '../../atoms';
 
 // import styled compo
@@ -24,8 +24,8 @@ import { ValidationTextField, ColorButton, ColorButtonB } from '../styledCompo/u
 function LoginForm() {
   const navigate = useNavigate();
   // const dispatch = useContext(DispatchContext);
-  const [token, setToken] = useRecoilState(tokenState);
-  const [user, setUser] = useRecoilState(userState);
+  const setToken = useSetRecoilState(tokenState);
+  const setUser = useSetRecoilState(userState);
 
   //useState로 email 상태를 생성함.
   const [email, setEmail] = useState('');
@@ -33,15 +33,6 @@ function LoginForm() {
   const [password, setPassword] = useState('');
   // input 상태관리
   const [checkLogin, setCheckLogin] = useState(true);
-
-  //이메일이 abc@example.com 형태인지 regex를 이용해 확인함.
-  const validateEmail = (email) => {
-    return email
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      );
-  };
 
   //위 validateEmail 함수를 통해 이메일 형태 적합 여부를 확인함.
   const isEmailValid = validateEmail(email);
@@ -66,12 +57,7 @@ function LoginForm() {
       const jwtToken = user.token;
       // sessionStorage에 "userToken"이라는 키로 JWT 토큰을 저장함.
       sessionStorage.setItem('userToken', jwtToken);
-      // dispatch 함수를 이용해 로그인 성공 상태로 만듦.
-      // console.log(user);
-      // dispatch({
-      //   type: 'LOGIN_SUCCESS',
-      //   payload: user,
-      // });
+
       console.log(user);
       setToken(user.token);
       setUser(user);
@@ -148,6 +134,8 @@ function LoginForm() {
                   setCheckLogin(true);
                 }}
               />
+              <br></br>
+              <Button onClick={() => navigate('/password/init')}>Forget Password?</Button>
               <Stack
                 spacing={1}
                 direction="row"
